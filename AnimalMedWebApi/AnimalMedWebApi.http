@@ -1,0 +1,6 @@
+@AnimalMedWebApi_HostAddress = http://localhost:5214
+
+GET {{AnimalMedWebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
