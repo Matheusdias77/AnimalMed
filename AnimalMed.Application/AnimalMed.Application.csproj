@@ -1,5 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\AnimalMed.Domain\AnimalMed.Domain.csproj" />
+    <ProjectReference Include="..\AnimalMed.Util\AnimalMed.Util.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Implementations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.66" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
