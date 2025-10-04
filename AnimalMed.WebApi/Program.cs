@@ -22,12 +22,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Adiciona repositório no DI
-builder.Services.AddSingleton<IEstoqueRepository>(sp =>
+builder.Services.AddSingleton<IStockRepository>(sp =>
 {
     var configuration = sp.GetRequiredService<IConfiguration>();
     var connectionString = configuration.GetConnectionString("DefaultConnection");
-    var logger = sp.GetRequiredService<ILogger<EstoqueRepository>>();
-    return new EstoqueRepository(connectionString);
+    var logger = sp.GetRequiredService<ILogger<StockRepository>>();
+    return new StockRepository(connectionString);
 });
 
 var app = builder.Build();
