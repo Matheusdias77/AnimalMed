@@ -9,10 +9,10 @@ namespace AnimalMed.Application.Data.Repositories
 {
     public interface ITreatmentRepository
     {
-        Task AddTreatment(TreatmentRecord record);
+        Task<bool>AddTreatment(TreatmentRecord record);
         Task<IEnumerable<TreatmentRecord>> GetAllTreatments();
         Task<TreatmentRecord> GetTreatmentById(int id);
-        Task UpdateTreatment(TreatmentRecord record);
-        Task DeleteTreatment(int id);
+        Task<bool> UpdateTreatment(TreatmentRecord record);
+        Task<bool> DeleteTreatment(int id);
     }
 }

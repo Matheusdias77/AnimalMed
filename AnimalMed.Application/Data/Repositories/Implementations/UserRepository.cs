@@ -72,7 +72,6 @@ namespace AnimalMed.Application.Data.Repositories.Implementations
 
                 var user = await connection.QuerySingleOrDefaultAsync<UserRecord>(query);
                 return user; 
-
             }
             catch (Npgsql.NpgsqlException ex)
             {
@@ -106,7 +105,7 @@ namespace AnimalMed.Application.Data.Repositories.Implementations
                 throw;
             }
         }
-        public async Task UpdateUser(UserRecord record)
+        public async Task<bool> UpdateUser(UserRecord record)
         {
             try
             {
@@ -129,7 +128,7 @@ namespace AnimalMed.Application.Data.Repositories.Implementations
                 {
                     Console.WriteLine($"Animal com Id = {record.Id} atualizado com sucesso!");
                 }
-
+                return true;
             }
             catch (Npgsql.NpgsqlException ex)
             {
@@ -142,7 +141,7 @@ namespace AnimalMed.Application.Data.Repositories.Implementations
                 throw;
             }
         }
-        public async Task DeleteUser(int id)
+        public async Task<bool> DeleteUser(int id)
         {
             try
             {
@@ -158,6 +157,7 @@ namespace AnimalMed.Application.Data.Repositories.Implementations
                 {
                     Console.WriteLine($"Usuário com Id = {id} deletado com sucesso!");
                 }
+                return true;
             }
             catch (Npgsql.NpgsqlException ex)
             {

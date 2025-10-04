@@ -4,7 +4,7 @@ namespace AnimalMed.Application.Data.Repositories
 {
     public interface IAnimalRepository
     {
-        Task AddAnimal(AnimalRecord record);
+        Task<bool>SaveAnimal(AnimalRecord record);
         Task<IEnumerable<AnimalRecord>> GetAllAnimals();
         Task<AnimalRecord> GetAnimalById(int id);
         Task UpdateAnimal(AnimalRecord record);

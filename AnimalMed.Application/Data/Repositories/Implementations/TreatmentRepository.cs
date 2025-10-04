@@ -12,7 +12,7 @@ namespace AnimalMed.Application.Data.Repositories.Implementations
             _connectionString = connectionString;
         }
 
-        public async Task AddTreatment(TreatmentRecord record)
+        public async Task<bool>AddTreatment(TreatmentRecord record)
         {
             try
             {
@@ -24,6 +24,7 @@ namespace AnimalMed.Application.Data.Repositories.Implementations
                 await connection.OpenAsync();
                 await connection.ExecuteScalarAsync<int>(query, record);
 
+                return true;
             }
             catch (NpgsqlException ex)
             {
@@ -80,7 +81,7 @@ namespace AnimalMed.Application.Data.Repositories.Implementations
                 throw;
             }
         }
-        public async Task UpdateTreatment(TreatmentRecord record)
+        public async Task<bool>UpdateTreatment(TreatmentRecord record)
         {
             try
             {
@@ -104,6 +105,8 @@ namespace AnimalMed.Application.Data.Repositories.Implementations
                 {
                     Console.WriteLine($"Animal com Id = {record.Id} atualizado com sucesso!");
                 }
+
+                return true;
             }
             catch (Exception ex)
             {
@@ -111,7 +114,7 @@ namespace AnimalMed.Application.Data.Repositories.Implementations
                 throw;
             }
         }
-        public async Task DeleteTreatment(int id)
+        public async Task<bool>DeleteTreatment(int id)
         {
             try
             {
@@ -127,6 +130,8 @@ namespace AnimalMed.Application.Data.Repositories.Implementations
                 {
                     Console.WriteLine($"Tratamento com Id = {id} deletado com sucesso!");
                 }
+
+                return true;
             } 
             catch (Exception ex)
             {

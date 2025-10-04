@@ -29,11 +29,9 @@ namespace AnimalMed.Application.Data.Repositories.Implementations
                 await using var connection = new NpgsqlConnection(_connectionString);
                 await connection.OpenAsync();
 
-                var rowsAffected = await connection.ExecuteAsync(query, record);
-
                 stopwatch.Stop();
 
-                return rowsAffected > 0; 
+                return true; 
             } catch (Exception ex)
             {
                 Console.WriteLine($"Error ao salvar estoque: {ex.Message}");

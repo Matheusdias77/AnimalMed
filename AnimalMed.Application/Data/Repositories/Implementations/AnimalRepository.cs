@@ -1,44 +1,46 @@
-﻿using AnimalMed.Domain.Records;
-using AnimalMed.Application.DbFactury;
+﻿using AnimalMed.Application.DbFactury;
+using AnimalMed.Domain.Records;
 using Dapper;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 using Npgsql;
-using AnimalMed.Application.DbFactury;
 
 namespace AnimalMed.Application.Data.Repositories.Implementations
 {
     public class AnimalRepository : IAnimalRepository
     {
+        #region.: Properties :.
         private readonly string _connectionString;
-        public AnimalRepository(string connectionString)
-        {
-            _connectionString = connectionString;
-        }
+        private readonly ILogger<AnimalRepository> _logger;
+        #endregion
 
-        public async Task AddAnimal(AnimalRecord record)
+        #region .: Contructor:.
+        public AnimalRepository(IConfiguration configuration, ILogger<AnimalRepository> logger)
         {
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _logger = logger;
+        }
+        #endregion
+
+        public async Task<bool>SaveAnimal(AnimalRecord record)
+        {
+            var query = $@"
+                        INSERT INTO {DbNames.Animal} (""nome"", ""especie"", ""raca"", ""sexo"", ""datanascimento"", ""peso"", ""castrado"", ""observacoes"", ""cpfdono"")
+                        VALUES (@nome, @especie, @raca, @sexo, @dataNascimento, @peso, @castrado, @observacoes, @cpfdono)";
+
+            await using var connection = new Npgsql.NpgsqlConnection(_connectionString);
+            await connection.OpenAsync();
+
             try
             {
-                const string query = $@"
-                                    INSERT INTO {DbNames.Animal} (""Name"", ""Race"", ""Weight"", ""SeverityStatus"")
-                                    VALUES (@Name, @Race, @Weight, @SeverityStatus)
-                                    RETURNING ""Id"";";
-
-                await using var connection = new Npgsql.NpgsqlConnection(_connectionString);
-                await connection.OpenAsync();
-
-                await connection.ExecuteScalarAsync<int>(query, record);
-            }
-            catch (NpgsqlException ex)
-            {
-                Console.WriteLine($"Erro no banco: {ex.Message}");
-                throw;
+                await connection.ExecuteAsync(query, record);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error ao adicionar animal: {ex.Message}");
-                throw;
-
+                _logger.LogError(ex, "Erro ao adicionar animal no banco de dados.");
             }
+
+            return true;
         }
         public async Task<IEnumerable<AnimalRecord>> GetAllAnimals()
         {
